@@ -59,7 +59,7 @@ class TempusDominusMixin:
             # Append an option to set the datepicker's value using a Javascript moment object
             options.update(self.moment_option(value))
 
-        context['js_options'] = options
+        context['js_options'] = mark_safe(options)
         field_html = render_to_string('tempus_dominus/widget.html', context)
         return mark_safe(force_text(field_html))
 
