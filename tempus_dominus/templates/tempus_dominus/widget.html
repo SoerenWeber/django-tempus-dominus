@@ -1,6 +1,6 @@
-<input type="{{ widget.type }}" name="{{ widget.name }}" data-toggle="datetimepicker" data-target="#{{ widget.attrs.id }}" {% include "django/forms/widgets/attrs.html" %}>
+<input type="{{ widget.type }}" name="{{ widget.name }}" data-toggle="datetimepicker" data-target="#{{ widget.attrs.id }}" {% for name, value in widget.attrs.items %}{% if value is not False %} {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}{% endif %}{% endfor %}>
 <script type="text/javascript">
     $(function () {{
-        $('#{{ picker_id }}').datetimepicker({{ js_options }});
+        $('#{{ widget.attrs.id }}').datetimepicker({{ js_options }});
     }});
 </script>
