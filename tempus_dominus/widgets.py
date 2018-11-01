@@ -50,12 +50,6 @@ class TempusDominusMixin:
     def render(self, name, value, attrs={}, renderer=None):
         context = super().get_context(name, value, attrs)
 
-        attr_html = ''
-        for attr_key, attr_value in self.attrs.items():
-            attr_html += ' {key}="{value}"'.format(
-                key=attr_key,
-                value=attr_value,
-            )
         if getattr(settings, 'TEMPUS_DOMINUS_LOCALIZE', False) and 'locale' not in self.js_options:
             self.js_options['locale'] = get_language()
 
@@ -65,14 +59,8 @@ class TempusDominusMixin:
             # Append an option to set the datepicker's value using a Javascript moment object
             options.update(self.moment_option(value))
 
-        field_html = render_to_string('tempus_dominus/widget.html', {
-            'type': context['widget']['type'],
-            'picker_id': context['widget']['attrs']['id'],
-            'name': context['widget']['name'],
-            'attrs': mark_safe(attr_html),
-            'js_options': mark_safe(options),
-        })
-
+        context['js_options'] = options
+        field_html = render_to_string('tempus_dominus/widget.html', context)
         return mark_safe(force_text(field_html))
 
     def moment_option(self, value):
